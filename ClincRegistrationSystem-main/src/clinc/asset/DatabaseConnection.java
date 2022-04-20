@@ -22,7 +22,7 @@ public class DatabaseConnection {
             Connection con = connectToDB();
             Statement stmt = con.createStatement();
             result =stmt.execute(query);
-            con.close();
+            //con.close();
         }catch(Exception e){ System.out.println(e);}
         return result;
     }
@@ -33,7 +33,7 @@ public class DatabaseConnection {
             Connection con = connectToDB();
             Statement stmt = con.createStatement();
             result =stmt.executeQuery(query);
-            con.close();
+            //con.close();
         }catch(Exception e){ System.out.println(e);}
         return result;
     }

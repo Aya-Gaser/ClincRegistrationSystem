@@ -1,7 +1,9 @@
 package clinc.entity;
+import clinc.service.AppointmentService;
+
 import java.util.Date;
 
-public class Appointment {
+public class Appointment  {
 
    private int ID;
    private Date dateTime;

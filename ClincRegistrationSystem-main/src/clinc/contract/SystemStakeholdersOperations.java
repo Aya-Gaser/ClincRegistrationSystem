@@ -1,12 +1,13 @@
 package clinc.contract;
 
+import java.sql.ResultSet;
+
 public interface SystemStakeholdersOperations {
 
-    public abstract void createStakeholders();
-
-    public abstract void viewStakeholders();
-
-    public abstract void updateStakeholders();
-
-    public abstract void deleteStakeholders();
+    public void create(String ... data);
+    public void readAll();
+    public void delete(String doctorID);
+    public void update(String ... data);
+    public void searchByName(String doctorName);
+    public void displayData(ResultSet result);
 }

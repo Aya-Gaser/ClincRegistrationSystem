@@ -2,45 +2,61 @@ package clinc.service;
 
 
 import clinc.asset.DatabaseConnection;
+import clinc.contract.SystemStakeholdersOperations;
 import clinc.entity.Doctor;
 import clinc.entity.ScheduleDay;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DoctorService extends DatabaseConnection {
+public class DoctorService implements SystemStakeholdersOperations {
 
-    public static void createDoctor(String name, String phone, String department) {
-        Doctor doctor = new Doctor(name, phone, department);
+
+    @Override
+    public void create(String ... data) {
         String query = "insert into `doctor`(`name`, `phone`, `department`) values ( '" +
-                name +"','" +phone + "','"+department+"');";
-        boolean result = executeWritingQuery(query);
+                data[0] +"','" +data[1] + "','"+data[2]+"');";
+        boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
 
-
-    public void deleteDoctor(Doctor doctor) {
-        String query = "delete from `doctor` where `ID` = `" + doctor.getID() + "');";
-        boolean result = executeWritingQuery(query);
+    @Override
+    public void delete(String doctorID) {
+        String query = "delete from `doctor` where `ID` = `" + doctorID + "');";
+        boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
-
-    public void updateDoctor(Doctor doctor) {
-        String query = "update `doctor` SET `name` = `"+ doctor.getName() +"', `phone` = `" + doctor.getPhone()
-                + "`, `department` = `" + doctor.getDepartment() + "` where `ID` = `" + doctor.getID() + "');";
-        boolean result = executeWritingQuery(query);
+    @Override
+    public void update(String ... data) {
+        //id-name-phone-department
+        String query = "update `doctor` SET `name` = `"+ data[1] +"', `phone` = `" + data[2]
+                + "`, `department` = `" + data[3] + "` where `ID` = `" + data[0] + "');";
+        boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
-
-    public ResultSet readAllDoctors() {
+    @Override
+    public void readAll() {
         String query = "select * from `doctor` limit 100";
-        ResultSet result = executeReadingQuery(query);
-        return result;
+        ResultSet result = DatabaseConnection.executeReadingQuery(query);
+        displayData(result);
+    }
+    @Override
+    public void searchByName(String doctorName) {
+        String query = "select * from `doctor` where `name` like `%" + doctorName +"%`;";
+        ResultSet result = DatabaseConnection.executeReadingQuery(query);
+        displayData(result);
+    }
+    @Override
+    public void displayData(ResultSet result) {
+        System.out.println("Doctor ID   Doctor Name     Doctor Department   Doctor Phone");
+        try {
+            while (result.next())
+                System.out.println(result.getInt(1) + "      " + result.getString(2) + "      " + result.getString(4) + "      " + result.getString(3));
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public ResultSet searchByDoctorName(String doctorName) {
-        String query = "select * from `doctor` where `name` like `%" + doctorName +"%`;";
-        ResultSet result = executeReadingQuery(query);
-        return result;
-    }
 }
