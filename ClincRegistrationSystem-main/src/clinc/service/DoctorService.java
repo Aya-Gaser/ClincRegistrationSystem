@@ -2,7 +2,7 @@ package clinc.service;
 
 
 import clinc.asset.DatabaseConnection;
-import clinc.contract.SystemStakeholdersOperations;
+import clinc.contract.SystemCRUDOperations;
 import clinc.entity.Doctor;
 import clinc.entity.ScheduleDay;
 
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DoctorService implements SystemStakeholdersOperations {
+public class DoctorService implements SystemCRUDOperations {
 
 
     @Override
@@ -30,8 +30,8 @@ public class DoctorService implements SystemStakeholdersOperations {
     @Override
     public void update(String ... data) {
         //id-name-phone-department
-        String query = "update `doctor` SET `name` = `"+ data[1] +"', `phone` = `" + data[2]
-                + "`, `department` = `" + data[3] + "` where `ID` = `" + data[0] + "');";
+        String query = "update `doctor` SET `name` = `"+ data[0] +"', `phone` = `" + data[1]
+                + "`, `department` = `" + data[2] + "` where `ID` = `" + data[3] + "');";
         boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
@@ -44,6 +44,12 @@ public class DoctorService implements SystemStakeholdersOperations {
     @Override
     public void searchByName(String doctorName) {
         String query = "select * from `doctor` where `name` like `%" + doctorName +"%`;";
+        ResultSet result = DatabaseConnection.executeReadingQuery(query);
+        displayData(result);
+    }
+    @Override
+    public void searchByID(String doctorID) {
+        String query = "select * from `doctor` where `ID` = `" + doctorID +"`;";
         ResultSet result = DatabaseConnection.executeReadingQuery(query);
         displayData(result);
     }

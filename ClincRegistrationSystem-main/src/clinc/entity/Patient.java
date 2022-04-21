@@ -6,13 +6,13 @@ public class Patient {
     private int ID;
     private  String name;
     private String phone;
-    private Date birthdate;
+    private int age;
     private String gender;
 
     public Patient(String name, String phone, Date birthdate, String gender){
         this.name = name;
         this.phone = phone;
-        this.birthdate = birthdate;
+        this.age = age;
         this.gender = gender;
     }
     // SETTERS
@@ -23,8 +23,8 @@ public class Patient {
     public void setPhone(String phone){
         this.phone = phone;
     }
-    public void setBirthdate(Date birthdate){
-        this.birthdate = birthdate;
+    public void setAge(int age){
+        this.age = age;
     }
     public void setGender(String gender){
         this.gender = gender;
@@ -39,8 +39,8 @@ public class Patient {
     public String getPhone(){
         return this.phone;
     }
-    public Date getBirthdate(){
-        return this.birthdate;
+    public int getAge(){
+        return this.age;
     }
     public String getGender(){
         return this.gender;

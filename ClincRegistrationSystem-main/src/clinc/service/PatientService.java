@@ -1,51 +1,62 @@
 package clinc.service;
 
 import clinc.asset.DatabaseConnection;
-import clinc.contract.SystemStakeholdersOperations;
+import clinc.contract.SystemCRUDOperations;
 import clinc.entity.Patient;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PatientService implements SystemStakeholdersOperations {
+public class PatientService implements SystemCRUDOperations {
 
-    public static void createPatient(String name, String phone, String gender, Date birthdate) {
-        Patient patient = new Patient(name, phone, birthdate, gender);
-        String query = "insert into `nurse`(`name`, `phone`, `gender`, `birthdate`) values ( '" +
-                name +"','" +phone + "','"+gender + "','" +birthdate +"');";
+    @Override
+    public void create(String ... data) {
+        String query = "insert into `patient`(`name`, `phone`, `gender`, `age`) values ( '" +
+                data[0] +"','" +data[1] + "','"+data[2] + "','" +data[3] +"');";
         boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
 
 
-    public void deletePatient(Patient patient) {
-        String query = "delete from `patient` where `ID` = `" + patient.getID() + "');";
+    @Override
+    public void delete(String patientID) {
+        String query = "delete from `patient` where `ID` = `" + patientID + "');";
         boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
 
-    public void updatePatient(Patient patient) {
-        String query = "update `patient` SET `name` = `"+ patient.getName() +"', `phone` = `" + patient.getPhone()
-                + "`, `gender` = `" + patient.getGender()  + "`, `birthdate` = `" + patient.getBirthdate()
-                + "` where `ID` = `" + patient.getID() + "');";
+    @Override
+    public void update(String ... data) {
+        String query = "update `patient` SET `name` = `"+ data[0] +"', `phone` = `" + data[1]
+                + "`, `gender` = `" + data[2]  + "`, `age` = `" + data[3]
+                + "` where `ID` = `" + data[4] + "');";
         boolean result = DatabaseConnection.executeWritingQuery(query);
         System.out.println(result);
     }
 
-    public void readAllPatient() {
+    @Override
+    public void readAll() {
         String query = "select * from `patient` limit 100";
         ResultSet result = DatabaseConnection.executeReadingQuery(query);
         displayData(result);
     }
 
-    public void searchByPatientName(String patientName) {
+    @Override
+    public void searchByName(String patientName) {
         String query = "select * from `patient` where `name` like `%" + patientName +"%`;";
         ResultSet result = DatabaseConnection.executeReadingQuery(query);
         displayData(result);
     }
+    @Override
+    public void searchByID(String patientID) {
+        String query = "select * from `patient` where `ID` = `" + patientID +"`;";
+        ResultSet result = DatabaseConnection.executeReadingQuery(query);
+        displayData(result);
+    }
+    @Override
     public void displayData(ResultSet result) {
-        System.out.println("Patient ID   Patient Name  Patient Phone");
+        System.out.println("patient ID   patient Name  patient Phone");
         try {
             while (result.next())
                 System.out.println(result.getInt(1) + "      " + result.getString(2) + "      " + result.getString(3));
